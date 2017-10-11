@@ -67,7 +67,7 @@ public class ProdutoDAO {
                 produto.setDescricao(rs.getString("pdesc"));
                 produto.setQtd(rs.getInt("qtd"));
                 produto.setValor(rs.getDouble("valor"));
-                
+                produto.setIdProduto(rs.getInt("idProduto"));
                 Categoria categoria = new Categoria();
                 categoria.setIdCategoria(rs.getInt("idCategoria"));
                 categoria.setDescricao(rs.getString("cdesc"));
