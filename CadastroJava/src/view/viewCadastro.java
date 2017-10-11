@@ -20,7 +20,7 @@ public class viewCadastro extends javax.swing.JFrame {
      *   \\ Método Construtor \\
      * 
      */
-    public viewCadastro() { // Bob, O Construtor
+    public viewCadastro() {
         initComponents();
         PreencherComboBoxCategorias();
     }
