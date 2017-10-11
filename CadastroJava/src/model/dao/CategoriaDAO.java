@@ -52,7 +52,8 @@ public class CategoriaDAO {
     }
     
     //Listando todas as categorias
-    public List<Categoria> findAll(){
+    
+    public List<Categoria> findAll(){ // Método , @Return List c/ findAll();
         String sql = "SELECT * from categoria";
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -65,6 +66,7 @@ public class CategoriaDAO {
             
             while(rs.next()){
                 Categoria categoria = new Categoria();
+                categoria.setIdCategoria(rs.getInt("idCategoria"));
                 categoria.setDescricao(rs.getString("descricao"));
                 categorias.add(categoria);
             }
