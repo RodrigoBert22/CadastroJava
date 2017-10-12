@@ -44,7 +44,7 @@ public class Categoria {
 
     @Override
     public String toString() {
-        return getDescricao(); //To change body of generated methods, choose Tools | Templates.
+        return getDescricao();
     }
     
 }

@@ -5,6 +5,7 @@
  */
 package view;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.bean.Categoria;
 import model.bean.Produto;
@@ -50,11 +51,32 @@ public class viewCadastro extends javax.swing.JFrame {
         }
         
     }
+    private void PreencherTabelaProdutos(int idCat){
+        ProdutoDAO pDao = new ProdutoDAO();
+        int idProduto=0;
+        String descProd= "";
+        int quantidade = 0;
+        double valor=0.0d;
+        int idCategoria=0;
+        dtmProdutos.setRowCount(0); //Reset table
+        for(Produto p : pDao.findAll(idCat)){
+            idProduto = p.getIdProduto();
+            descProd = p.getDescricao();
+            valor = p.getValor();
+            quantidade = p.getQtd();
+            //Composição
+            idCategoria = p.getCategoria().getIdCategoria();
+            Object[] dados = {idProduto, descProd, quantidade, valor, idCategoria};
+            dtmProdutos.addRow(dados);
+        }
+        
+    }
 
     private void PreencherComboBoxCategorias(){
         CategoriaDAO catDao = new CategoriaDAO();
         for(Categoria cat:catDao.findAll()){
             jComboBoxCategorias.addItem(cat);
+           
         }
     }
             
@@ -81,6 +103,7 @@ public class viewCadastro extends javax.swing.JFrame {
         jTableProdutos = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
         jComboBoxCategorias = new javax.swing.JComboBox<>();
+        jButtonMostrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -124,6 +147,19 @@ public class viewCadastro extends javax.swing.JFrame {
 
         jLabel4.setText("Categoria");
 
+        jComboBoxCategorias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxCategoriasActionPerformed(evt);
+            }
+        });
+
+        jButtonMostrar.setText("Mostrar");
+        jButtonMostrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonMostrarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -133,16 +169,6 @@ public class viewCadastro extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(33, 33, 33)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButtonCadastrar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonAtualizar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonExcluir)
-                                .addGap(57, 57, 57)
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jComboBoxCategorias, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel1)
@@ -156,7 +182,23 @@ public class viewCadastro extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jTextFieldValor, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel3)))))
+                                    .addComponent(jLabel3)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButtonCadastrar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButtonAtualizar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButtonExcluir)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(57, 57, 57)
+                                        .addComponent(jLabel4)
+                                        .addGap(14, 14, 14))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButtonMostrar)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                                .addComponent(jComboBoxCategorias, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -182,13 +224,31 @@ public class viewCadastro extends javax.swing.JFrame {
                     .addComponent(jButtonExcluir)
                     .addComponent(jLabel4)
                     .addComponent(jComboBoxCategorias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(38, 38, 38)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonMostrar)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jComboBoxCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCategoriasActionPerformed
+        // TODO add your handling code here:
+        Categoria cat = new Categoria();
+        //Casting(Categoria)
+        cat = (Categoria) jComboBoxCategorias.getSelectedItem();
+        PreencherTabelaProdutos(cat.getIdCategoria());
+       // Depuração
+       // JOptionPane.showMessageDialog(null, cat);
+       
+    }//GEN-LAST:event_jComboBoxCategoriasActionPerformed
+
+    private void jButtonMostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMostrarActionPerformed
+        // TODO add your handling code here:
+        PreencherTabelaProdutos();
+    }//GEN-LAST:event_jButtonMostrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -229,6 +289,7 @@ public class viewCadastro extends javax.swing.JFrame {
     private javax.swing.JButton jButtonAtualizar;
     private javax.swing.JButton jButtonCadastrar;
     private javax.swing.JButton jButtonExcluir;
+    private javax.swing.JButton jButtonMostrar;
     private javax.swing.JComboBox<Object> jComboBoxCategorias;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
